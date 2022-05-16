@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import seed from './seed'
 import { get, post, patch, del } from './lists'
 
-test('Get', async () => {
+test('Gets lists', async () => {
     const { body: {
         lists
     } } = await get()
@@ -12,7 +12,7 @@ test('Get', async () => {
 })
 
 
-test('Post', async () => {
+test('Adds a list', async () => {
     const formData = new FormData()
     const testTitle = 'Test List 1'
     formData.append('title', testTitle)
