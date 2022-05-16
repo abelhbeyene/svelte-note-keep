@@ -7,7 +7,7 @@
 
 	let items = [];
 	let newItemEntryVal = '';
-	let showTextArea = false;
+	let showTextArea = true;
 	let title = '';
 
 	const reset = () => {
@@ -22,7 +22,7 @@
 			items = [...items, newItemEntryVal];
 		}
 		onAddList(title, items);
-		reset()
+		reset();
 		// TODO: what happens if it fails?
 	};
 
@@ -38,23 +38,24 @@
 	};
 </script>
 
-<form class="add-list my-8 block border-b-2 w-48 border-blue-100" on:submit|preventDefault={_onAddList}>
+<form class="add-list my-8 px-8 py-3 w-6/12 flex flex-col" on:submit|preventDefault={_onAddList}>
 	<input
 		type="text"
-		class="add-list__add-items-title"
+		class="add-list__add-items-title border-b-blue-400 border-b-2 mb-2"
 		name="add-list__add-items-title"
 		id="add-list__add-items-title"
-		placeholder="Take a note..."
+		placeholder="List title"
 		bind:value={title}
 		on:focus={() => (showTextArea = true)}
 	/>
 	{#if showTextArea}
-		<ul class="add-list__add-items-container">
+		<ul class="add-list__add-items-container flex flex-col list-disc list-inside">
 			{#each items as item, idx}
-				<li>
+				<li class="">
 					<input
 						type="text"
-						class="add-list__add-item"
+						class="add-list__add-item border-b-blue-400 border-b-2 mb-2"
+						placeholder="Add item"
 						value={item}
 						on:keyup={(e) => updateItem(e, idx)}
 					/>
@@ -62,13 +63,21 @@
 			{/each}
 
 			<li>
-				<input type="text" class="add-list__add-item" bind:value={newItemEntryVal} />
-				<button class="add-list__add-another-item" on:click|preventDefault={addItem}>+</button>
+				<input
+					type="text"
+					placeholder="Add item"
+					class="add-list__add-item border-b-blue-400 border-b-2 mb-2"
+					bind:value={newItemEntryVal}
+				/>
+				<button class="add-list__add-another-item border-2 px-2 hover:bg-blue-300" on:click|preventDefault={addItem}
+					>+</button
+				>
 			</li>
 		</ul>
-		<button type="submit">Save</button>
+		<button type="submit" class="w-full bg-blue-500 text-white p-2">Save</button>
 	{/if}
 </form>
+<hr class="border-1 border-blue-400 block w-full m-5" />
 
 <style>
 	.add-list__add-items-container {

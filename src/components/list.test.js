@@ -45,5 +45,10 @@ test("Updates correct item", async () => {
         }
     })
 
-    expect(onItemEdit).toHaveBeenCalledWith(list.listId, list.items[idxToTest].itemId, newValue)
+    expect(onItemEdit).toHaveBeenCalledWith({
+        listIdToUpdate: list.listId,
+        itemIdToUpdate: list.items[idxToTest].itemId,
+        itemValue: newValue,
+        done: list.items[idxToTest].done
+    })
 })

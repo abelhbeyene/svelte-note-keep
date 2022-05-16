@@ -8,9 +8,6 @@
 	import AddList from '../components/add-list.svelte';
 	import List from '../components/list.svelte';
 	let lists = [];
-	$: {
-		console.log('list updated -->', lists);
-	}
 	export const onAddList = async (title, items) => {
 		const body = new FormData();
 		body.append('title', title);
@@ -52,34 +49,24 @@
 		lists = fetchedLists;
 	};
 
-	const onItemEdit = async (listId, itemId, newValue) => {
-		const listIdxToUpdate = lists.findIndex((list) => list.listId === listId);
-		// TODO: handle err
-		const itemIdx = lists[listIdxToUpdate].items.findIndex((item) => item.itemId === itemId);
-
-		lists[listIdxToUpdate][itemIdx] = newValue;
-		// debugger
-		fetch('/lists', {
+	const onItemEdit = async ({listIdToUpdate, itemIdToUpdate, itemValue, done}) => {
+		const body = new FormData();
+		body.append('listIdToUpdate', listIdToUpdate);
+		body.append('itemIdToUpdate', itemIdToUpdate);
+		body.append('itemValue', itemValue);
+		body.append('done', done);
+		const res = await fetch('/api/lists', {
+			method: 'PATCH',
 			headers: {
-				method: 'POST',
-				Accept: 'application/json'
+				Accept: 'multipart/form-data'
 			},
-			body: JSON.stringify({
-				listId,
-				itemId,
-				newValue
-			})
+			body
 		});
-		lists = [...lists];
+
+		const {lists: newLists} = await res.json()
+		lists = [...newLists];
 	};
 
-	const onItemStatusChange = async (listId, itemId) => {
-		const listIdxToUpdate = lists.findIndex((list) => list.listId === listId);
-		// TODO: handle err
-		const itemIdx = lists[listIdxToUpdate].items.findIndex((item) => item.itemId === itemId);
-		lists[listIdxToUpdate].items[itemIdx].done = !lists[listIdxToUpdate].items[itemIdx].done;
-		lists = [...lists];
-	};
 
 	onMount(async () => {
 		try {
@@ -110,14 +97,14 @@
 	</div>
 </header>
 <section>
-	<h1>Welcome to Note Keep</h1>
+	<h1 class="text-2xl mt-6">Create multiple grocery lists</h1>
 
 	<AddList {onAddList} />
 
 	{#if lists.length > 0}
 		<ul class="flex flex-row">
 			{#each lists as list, index}
-				<List {...list} {onDeleteList} {onItemEdit} {onItemStatusChange} />
+				<List {...list} {onDeleteList} {onItemEdit} />
 			{/each}
 		</ul>
 	{/if}
