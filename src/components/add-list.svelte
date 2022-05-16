@@ -38,7 +38,7 @@
 	};
 </script>
 
-<form class="add-list my-8 px-8 py-3 w-6/12 flex flex-col" on:submit|preventDefault={_onAddList}>
+<form class="add-list my-8 sm:px-8 py-3 w-6/12 flex flex-col" on:submit|preventDefault={_onAddList}>
 	<input
 		type="text"
 		class="add-list__add-items-title border-b-blue-400 border-b-2 mb-2"

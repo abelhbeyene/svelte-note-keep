@@ -102,7 +102,7 @@
 	<AddList {onAddList} />
 
 	{#if lists.length > 0}
-		<ul class="flex flex-row">
+		<ul class="flex flex-row flex-wrap">
 			{#each lists as list, index}
 				<List {...list} {onDeleteList} {onItemEdit} />
 			{/each}

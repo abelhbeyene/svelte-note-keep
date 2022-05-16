@@ -6,7 +6,7 @@
 	export let onItemEdit = () => {};
 </script>
 
-<li class="shadow-sm border-2 mx-4 p-3 relative">
+<li class="shadow-sm border-2 mb-4 mx-4 p-3 relative">
 	<h3 class="w-full font-bold mb-2 p-2 border-b-2 border-blue-500">{title}</h3>
 	{#each items as item, idx}
 		<ul>

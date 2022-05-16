@@ -1,11 +1,7 @@
 import seed from './seed.js'
-import {v4 as uuidv4} from 'uuid'
 let lists = seed;
 
-// TODOs: 
-//  - multiple users
-//  - Validate inputs
-
+const generateRandomNum = () => Math.floor(1000 + Math.random() * 9000)
 
 export async function get() {
     return {
@@ -24,13 +20,13 @@ export async function post({ request }) {
     const _items = items.map((v) => ({
         value: v,
         done: false,
-        itemId: uuidv4() 
+        itemId: generateRandomNum() 
     }));
 
     lists = [
         ...lists, 
         { 
-            listId: uuidv4(), 
+            listId: generateRandomNum(), 
             title, 
             items: _items 
         }
