@@ -1,9 +1,17 @@
-import seed from './seed.js'
-let lists = seed;
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient();
 
-const generateRandomNum = () => Math.floor(1000 + Math.random() * 9000)
 
 export async function get() {
+    const lists = await prisma.list.findMany({
+        include: {
+            items: {
+                orderBy: {
+                    createdAt: 'desc'
+                }
+            }
+        }
+    })
     return {
         body: {
             error: null,
@@ -19,18 +27,18 @@ export async function post({ request }) {
 
     const _items = items.map((v) => ({
         value: v,
-        done: false,
-        itemId: generateRandomNum() 
+        done: false
     }));
 
-    lists = [
-        ...lists, 
-        { 
-            listId: generateRandomNum(), 
-            title, 
-            items: _items 
+    const lists = await prisma.list.create({
+        data: {
+            title,
+            items: {
+                create: _items
+            }
         }
-    ];
+    })
+    
     return {
         body: {
             error: null,
@@ -42,41 +50,43 @@ export async function post({ request }) {
 
 export async function del({ request }) {
     const formData = await request.formData()
-    const listIdToDelete = formData.get('listIdToDelete');
+    const id = formData.get('listIdToDelete');
 
-    lists = lists.filter(({ listId }) => listId !== listIdToDelete);
+    const list = await prisma.list.delete({
+        where: {
+            id
+        }
+    });
+
     return {
         body: {
             error: null,
-            lists
+            list
         }
     };
 }
 
 export async function patch({ request }) {
     const formData = await request.formData()
-    const listIdToUpdate = formData.get('listIdToUpdate');
-    const itemIdToUpdate = formData.get('itemIdToUpdate');
-    const itemValue = formData.get('itemValue');
-    const done = formData.get('done');
+    const id = formData.get('itemIdToUpdate');
+    const value = formData.get('itemValue');
+    const done = formData.get('done') === 'true';
 
-    const listIdxToUpdate = lists.findIndex((list) => list.listId === listIdToUpdate);
-    const itemIdx = lists[listIdxToUpdate].items.findIndex((item) => item.itemId === itemIdToUpdate);
-
-    if (lists[listIdxToUpdate].items[itemIdx] === undefined) {
-        return {
-            error: true,
-            errorMsg: "failed to update"
+    const res = await prisma.items.update({
+        where: {
+            id
+        },
+        data: {
+            value,
+            done,
+            id
         }
-    }
-
-    lists[listIdxToUpdate].items[itemIdx].value = itemValue;
-    lists[listIdxToUpdate].items[itemIdx].done = done === 'true';
+    })
 
     return {
         body: {
             error: null,
-            lists
+            res
         }
     };
 }

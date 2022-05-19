@@ -25,7 +25,7 @@
 			// handle error
 			return;
 		}
-		lists = fetchedLists;
+		getLists()
 	};
 
 	export const onDeleteList = async (listIdToDelete) => {
@@ -46,12 +46,11 @@
 			// handle error
 			return;
 		}
-		lists = fetchedLists;
+		getLists()
 	};
 
-	const onItemEdit = async ({listIdToUpdate, itemIdToUpdate, itemValue, done}) => {
+	const onItemEdit = async ({itemIdToUpdate, itemValue, done}) => {
 		const body = new FormData();
-		body.append('listIdToUpdate', listIdToUpdate);
 		body.append('itemIdToUpdate', itemIdToUpdate);
 		body.append('itemValue', itemValue);
 		body.append('done', done);
@@ -63,12 +62,10 @@
 			body
 		});
 
-		const {lists: newLists} = await res.json()
-		lists = [...newLists];
+		getLists()
 	};
 
-
-	onMount(async () => {
+	const getLists = async () => {
 		try {
 			const res = await fetch('/api/lists');
 			const { error, lists: fetchedLists } = await res.json();
@@ -78,7 +75,8 @@
 			// TODO: handle error
 			console.error('Failed to fetch lists', e);
 		}
-	});
+	}
+	onMount(getLists);
 </script>
 
 <svelte:head>

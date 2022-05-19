@@ -4,16 +4,16 @@ import { render, fireEvent } from "@testing-library/svelte";
 import List from "./list";
 // TODO: no need to render for every test
 const list = {
-    listId: '111',
+    id: '111',
     title: 'Shopping list 1',
     items: [
         {
-            itemId: '1',
+            id: '1',
             value: 'milk',
             done: false
         },
         {
-            itemId: '2',
+            id: '2',
             value: 'butter',
             done: false
         }
@@ -28,7 +28,7 @@ test("Deletes list with correct ID", async () => {
     const deleteBtn = container.querySelector('.list__delete')
     await fireEvent.click(deleteBtn)
 
-    expect(onDeleteList).toHaveBeenCalledWith(list.listId)
+    expect(onDeleteList).toHaveBeenCalledWith(list.id)
 })
 test("Updates correct item", async () => {
     const onItemEdit = jest.fn()
@@ -46,8 +46,8 @@ test("Updates correct item", async () => {
     })
 
     expect(onItemEdit).toHaveBeenCalledWith({
-        listIdToUpdate: list.listId,
-        itemIdToUpdate: list.items[idxToTest].itemId,
+        listIdToUpdate: list.id,
+        itemIdToUpdate: list.items[idxToTest].id,
         itemValue: newValue,
         done: list.items[idxToTest].done
     })

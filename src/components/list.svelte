@@ -1,6 +1,6 @@
 <script>
 	export let title = '';
-	export let listId = '';
+	export let id = '';
 	export let items = [];
 	export let onDeleteList = () => {};
 	export let onItemEdit = () => {};
@@ -16,8 +16,7 @@
 					checked={item.done}
 					on:click={() =>
 						onItemEdit({
-							listIdToUpdate: listId,
-							itemIdToUpdate: item.itemId,
+							itemIdToUpdate: item.id,
 							itemValue: item.value,
 							done: !item.done
 						})}
@@ -26,12 +25,11 @@
 					type="text"
 					class="list__item"
 					class:line-through={item.done}
-					id={`list__item${listId}_${idx}`}
+					id={`list__item${id}_${idx}`}
 					value={item.value}
 					on:blur={(e) =>
 						onItemEdit({
-							listIdToUpdate: listId,
-							itemIdToUpdate: item.itemId,
+							itemIdToUpdate: item.id,
 							itemValue: e.target.value,
 							done: item.done
 						})}
@@ -40,7 +38,7 @@
 		</ul>
 	{/each}
 	<button
-		on:click|preventDefault={() => onDeleteList(listId)}
+		on:click|preventDefault={() => onDeleteList(id)}
 		class="bg-yellow-200 border-2 border-yellow-300 shadow-yellow-600 absolute top-0 right-0 text-sm list__delete"
 		>Delete</button
 	>

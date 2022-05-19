@@ -1,0 +1,50 @@
+@endpoint=http://localhost:3000/api/lists
+# Get Lists
+GET {{endpoint}}
+
+###
+POST {{endpoint}}
+Content-Type: multipart/form-data; boundary=---------------------------95560484427229477374152074648
+
+-----------------------------95560484427229477374152074648
+Content-Disposition: form-data; name="title"
+
+Shopping list 22
+-----------------------------95560484427229477374152074648
+Content-Disposition: form-data; name="items"
+
+["sdfsdf"]
+-----------------------------95560484427229477374152074648--
+
+
+###
+DELETE {{endpoint}}
+Content-Type: multipart/form-data; boundary=---------------------------342919253225431289353237541670
+
+-----------------------------342919253225431289353237541670
+Content-Disposition: form-data; name="listIdToDelete"
+
+14a68364-f13d-4ebc-8fa3-bfd43d5da3b8
+-----------------------------342919253225431289353237541670--
+
+###
+PATCH {{endpoint}}
+Content-Type: multipart/form-data; boundary=---------------------------27693400234117825772305883735
+-----------------------------27693400234117825772305883735
+Content-Disposition: form-data; name="listIdToUpdate"
+
+d132529b-d85a-4fd5-b469-a6eac0883321
+-----------------------------27693400234117825772305883735
+Content-Disposition: form-data; name="itemIdToUpdate"
+
+undefined
+-----------------------------27693400234117825772305883735
+Content-Disposition: form-data; name="itemValue"
+
+Cars
+-----------------------------27693400234117825772305883735
+Content-Disposition: form-data; name="done"
+
+false
+-----------------------------27693400234117825772305883735--
+

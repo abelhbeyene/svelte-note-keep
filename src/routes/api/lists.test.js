@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 
-import seed from './seed'
+import seed from '../../../prisma/seed'
 import { get, post, patch, del } from './lists'
 
 test('Gets lists', async () => {
